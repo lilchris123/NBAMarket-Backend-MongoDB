@@ -7,8 +7,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.nba.model.Users;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,10 +24,15 @@ public class JwtTokenUtil implements Serializable {
 	@Value("${jwt.secret}")
 	private String secret;
 	
-	//retrieve username from jwt token
+	//retrieve id from jwt token
 	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
+//	public String getUsernameFromToken(String token) {
+//		Claims claims= getAllClaimsFromToken(token);
+//			System.out.println((String) claims.get("username"));
+//		return (String) claims.get("username");
+//	}
 	
 	//retrieve expiration date from jwt token
 	public Date getExpirationDateFromToken(String token) {
@@ -48,9 +54,14 @@ public class JwtTokenUtil implements Serializable {
 	}
 	
 	//generate token for user
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(Users user) {
 		Map<String, Object> claims = new HashMap<>();
-		return doGenerateToken(claims, userDetails.getUsername());
+		claims.put("id", user.getId());
+		claims.put("first_name", user.getFirst_name());
+		claims.put("last_name", user.getLast_name());
+		claims.put("role", user.getRole());
+		System.out.println(claims.toString());
+		return doGenerateToken(claims, user.getUsername());
 	}
 	
 	//while creating the token -
@@ -59,12 +70,13 @@ public class JwtTokenUtil implements Serializable {
 	//3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 	//   compaction of the JWT to a URL-safe string 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
+		System.out.println(claims.toString());
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 	//validate token
-	public Boolean validateToken(String token, UserDetails userDetails) {
+	public Boolean validateToken(String token, Users userDetails) {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}

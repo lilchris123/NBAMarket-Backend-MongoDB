@@ -2,20 +2,14 @@ spring:
   jackson:
     serialization:
       indent-output: true
-  
-  datasource:
-    url: jdbc:mysql://localhost:3306/nba_db?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: "testUser"
-    password: "123"
-  jpa:
-    database: MYSQL
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-      use-new-id-generator-mappings: false
+  data:
+    mongodb:
+      uri: mongodb+srv://lilchris:Chris123@cluster0-hnhd3.mongodb.net
+      database: nbaDB
+      
 
 jwt:
-  secret: javainuse
+  secret: nbamarket
 server:
   port: 8080
 

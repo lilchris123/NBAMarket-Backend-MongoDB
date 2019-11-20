@@ -2,40 +2,29 @@ package com.nba.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Entity
-@Table(name= "players")
+@Document(collection="players")
 public class Player implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy =GenerationType.AUTO)
-	@Column(name ="id")
-	private int id;
+	private String id;
 	
 	private String first_name;
 	private String last_name;
-	private String team_name;
+	@Field(value="team_name")
+	private String teamName;
 	private String position;
 	private int overall;
 	
-	@ManyToOne
-	@JoinColumn(name="Team_id")
-	private Team team;
 	
-	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getFirst_name() {
@@ -51,10 +40,10 @@ public class Player implements Serializable{
 		this.last_name = last_name;
 	}
 	public String getTeam_name() {
-		return team_name;
+		return teamName;
 	}
 	public void setTeam_name(String team) {
-		this.team_name = team;
+		this.teamName = team;
 	}
 	public int getOverall() {
 		return overall;

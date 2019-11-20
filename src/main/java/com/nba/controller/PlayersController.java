@@ -2,7 +2,7 @@ package com.nba.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nba.dto.NbaDto;
+import com.nba.dto.PlayerDto;
 import com.nba.model.Player;
 import com.nba.service.PlayersService;
 
@@ -32,36 +32,36 @@ public class PlayersController {
 	
 	
 	@GetMapping("/api/players")
-	public List<NbaDto> getAll(){
+	public Set<PlayerDto> getAll(){
 		return playersService.findAll();
 	}
 	
 	@GetMapping("/api/players/{id}")
-	public ResponseEntity<NbaDto> get(@PathVariable int id) {
-		NbaDto nba= playersService.findOne(id);
+	public ResponseEntity<PlayerDto> get(@PathVariable String id) {
+		PlayerDto nba= playersService.findOne(id);
 		return ResponseEntity.ok(nba);
 	}
 	
 	@PostMapping("/api/players")
-	public ResponseEntity<NbaDto> create(@RequestBody @Valid NbaDto nba) throws URISyntaxException {
-		NbaDto result= playersService.save(nba);
+	public ResponseEntity<PlayerDto> create(@RequestBody @Valid PlayerDto nba) throws URISyntaxException {
+		PlayerDto result= playersService.save(nba);
 		return ResponseEntity.created(new URI("/api/players" +result.getId())).body(nba);
 	}
 	
 	@PutMapping("/api/players")
-	public ResponseEntity<NbaDto> update(@RequestBody @Valid NbaDto nba) {
-		NbaDto result= playersService.update(nba);
+	public ResponseEntity<PlayerDto> update(@RequestBody @Valid PlayerDto nba) {
+		PlayerDto result= playersService.update(nba);
 		return ResponseEntity.ok().body(result);
 	}
 	
 	@DeleteMapping("/api/players")
-	public ResponseEntity<NbaDto> delete(@PathVariable int id) {
+	public ResponseEntity<PlayerDto> delete(@PathVariable String id) {
 		playersService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/api/teams/{team_name}/players")
-	public List<Player> getAllTeamPlayers(@PathVariable String team_name){
+	public Set<Player> getAllTeamPlayers(@PathVariable String team_name){
 		return playersService.getTeamPlayers(team_name);
 	}
 

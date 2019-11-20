@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nba.dto.UserDTO;
-import com.nba.model.User;
+import com.nba.model.Users;
 import com.nba.service.JwtUserDetailsService;
 import com.nba.service.UserService;
 
@@ -26,12 +26,12 @@ public class UserController {
 	private JwtUserDetailsService userDetailsService;
 	
 	@GetMapping("/users")
-	private List<User> getAllUsers() {
+	private List<Users> getAllUsers() {
 		return userService.getAllUsers();
 	}
 	
 	@GetMapping("/users/{username}")
-	private User getUser(@PathVariable String username) {
+	private Users getUser(@PathVariable String username) {
 		return userService.getUser(username);
 	}
 	
@@ -41,7 +41,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/users/{id}")
-	private void  deleteUser(@PathVariable int id) throws IOException {
+	private void  deleteUser(@PathVariable String id) throws IOException {
 		userService.deleteUser(id);
 	}
 }

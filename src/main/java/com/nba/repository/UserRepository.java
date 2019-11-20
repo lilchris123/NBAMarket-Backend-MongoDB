@@ -1,11 +1,11 @@
 package com.nba.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.nba.model.User;
+import com.nba.model.Users;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>{
-		User findByUsername(String username);
+public interface UserRepository extends MongoRepository<Users, String>{
+		Users findByUsername(String username);
 }

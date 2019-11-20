@@ -3,9 +3,9 @@ package com.nba.dto;
 import javax.validation.constraints.NotNull;
 
 
-public class NbaDto {
+public class PlayerDto {
 	@NotNull
-	private int id;
+	private String id;
 	
 	@NotNull
 	private String first_name;
@@ -23,11 +23,11 @@ public class NbaDto {
 	private int overall;
 	
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

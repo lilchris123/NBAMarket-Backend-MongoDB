@@ -1,12 +1,13 @@
 package com.nba.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,9 +17,8 @@ import com.nba.config.JwtTokenUtil;
 import com.nba.dto.UserDTO;
 import com.nba.model.JwtRequest;
 import com.nba.model.JwtResponse;
-import com.nba.model.User;
+import com.nba.model.Users;
 import com.nba.service.JwtUserDetailsService;
-import com.nba.service.UserService;
 
 @RestController
 @CrossOrigin
@@ -32,30 +32,29 @@ public class JwtAuthenticationController {
 	
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
-	
-	@Autowired
-	private UserService userService;
+
 	
 	@PostMapping("/users/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-		final UserDetails userDetails = userDetailsService
+		final Users userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails);
 		
-		User user=userService.getUser(authenticationRequest.getUsername());
-		return ResponseEntity.ok(new JwtResponse(token,user));
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		return ResponseEntity.ok(new JwtResponse(token));
 	}
 	
+	//user registration controller method, set the user role= "USER" 
 	@PostMapping("/users/register")
 	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+		user.setRole("USER");
 		return ResponseEntity.ok(userDetailsService.save(user));
 	}
 	
 	private void authenticate(String username, String password) throws Exception {
 
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>()));
 		} 
 		catch (DisabledException e) {
 			throw new Exception("USER_DISABLED", e);

@@ -1,10 +1,8 @@
 package com.nba.dto;
 
-
-
 public class UserDTO {
 	
-	private int id;
+	private String id;
 	
 	private String username;
 	private String password;
@@ -12,10 +10,10 @@ public class UserDTO {
 	private String last_name;
 	private String role;
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getUsername() {

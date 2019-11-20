@@ -1,40 +1,19 @@
-package com.nba.model;
+package com.nba.dto;
 
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import com.nba.model.Player;
 
-@Document(collection="teams")
-public class Team {
+public class TeamDTO {
 	
-	@Id
 	private String id;
 	private String name;
 	private String location;
-	
-	@Field(value="offensive_rating")
 	private int offensiveRating;
-	@Field(value="defensive_rating")
 	private int defensiveRating;
-	@Field(value="overall_rating")
 	private int overallRating;
-	
 	private Set<Player> players;
 	
-	public Team() {};
-	public Team(String id, String name, String location, int offensiveRating, int defensiveRating, int overallRating, Set<Player> players) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.location = location;
-		this.offensiveRating = offensiveRating;
-		this.defensiveRating = defensiveRating;
-		this.overallRating = overallRating;
-		this.players= players;
-		
-	}
 	
 	public String getId() {
 		return id;
@@ -78,6 +57,7 @@ public class Team {
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
 	}
+	
 	
 
 }
